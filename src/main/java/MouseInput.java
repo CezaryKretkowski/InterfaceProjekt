@@ -76,6 +76,7 @@ public class MouseInput implements MouseListener, MouseMotionListener {
                 selected=null;
             } else {
                 ChessBoard.getInstance().setPiece(selected, selected.getKords().x, selected.getKords().y);
+                selected=null;
             }
         }
         renderComponets.repaint();
