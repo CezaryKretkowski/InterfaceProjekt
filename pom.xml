@@ -13,4 +13,45 @@
         <maven.compiler.target>16</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.metsci.ext.com.kitfox.svg</groupId>
+            <artifactId>svg-salamander</artifactId>
+            <version>0.1.19</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>4.1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.swinglabs</groupId>
+            <artifactId>jxlayer</artifactId>
+            <version>3.0.4</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.weisj</groupId>
+            <artifactId>darklaf-core</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+
+
+
+
+    </dependencies>
+    <description>A themeable Look and Feel for java swing.</description>
+    <name>Darklaf</name>
+    <url>https://github.com/mautini/schemaorg-java</url>
+    <organization>
+        <name>com.github.weisj</name>
+        <url>https://github.com/weisj</url>
+    </organization>
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/weisJ/darklaf/issues</url>
+    </issueManagement>
+
 </project>

@@ -1,22 +1,49 @@
+import com.github.weisj.darklaf.LafManager;
+import com.github.weisj.darklaf.theme.DarculaTheme;
+
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+
 
 public class App extends JFrame {
+    public JFrame window;
     private JPanel view;
+    public  JMenuBar menuBar;
+    public JMenu m;
+    public JMenuItem settings;
+    public Settings s;
+    void addSubMenu(){
+        settings=new JMenuItem("settings");
+        settings.addActionListener(s);
+        m.add(settings);
+    }
+
     public App(){
-        setBounds(100, 100, 800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        s=new Settings();
+        window=new JFrame();
+        menuBar=new JMenuBar();
+        window.setBounds(100, 100, 800, 600);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         view=new RenderComponets();
-        this.setContentPane(view);
+        m=new JMenu("Menu");
+        window.setJMenuBar(menuBar);
+        addSubMenu();
+        menuBar.add(m);
+        window.setContentPane(view);
     }
     public static void main( String[] args )
     {
-        try {
-            App window = new App();
-            window.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            LafManager.setTheme(new DarculaTheme());
+            LafManager.install();
 
-        }
-        catch(Exception e) {
-            e.getStackTrace();
-        }
+            try {
+                App app = new App();
+                app.window.setVisible(true);
+
+            } catch (Exception e) {
+                e.getStackTrace();
+            }
+        });
     }
 }

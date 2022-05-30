@@ -20,6 +20,7 @@ public class RenderComponets extends JPanel {
     public Timer whiteTimer;
     public Timer blackTimer;
 
+
     public void setAntiAliasing() {
         hints = new RenderingHints(RenderingHints.KEY_RENDERING,
                 RenderingHints.VALUE_RENDER_QUALITY);
@@ -56,12 +57,14 @@ public class RenderComponets extends JPanel {
     public RenderComponets() {
 
         this.ANTIALIAS = true;
+
         this.boardPosX = new Point();
         this.boardPosy = new Point();
         this.setBackground(Color.DARK_GRAY);
         this.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         mouseInput = new MouseInput(this);
         this.addMouseListener(mouseInput);
+
         this.addMouseMotionListener(mouseInput);
         this.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent componentEvent) {
@@ -92,7 +95,7 @@ public class RenderComponets extends JPanel {
         super.paintComponent(g);
         g2d = (Graphics2D) g;
         calculateSize();
-        ChessBoard.drawBoard(g2d, (int) leftPanel, 30, (int) chessFildWidth, new Color(0.0f, 0.4f, 0.0f), Color.WHITE);
+        ChessBoard.drawBoard(g2d, (int) leftPanel, 30, (int) chessFildWidth);
         if (ANTIALIAS)
             g2d.setRenderingHints(hints);
         paintPosytion(g2d);

@@ -2,7 +2,8 @@ import java.awt.*;
 
 public class ChessBoard {
     private static ChessBoard chessBoard_Instance = null;
-
+    public static Color first= new Color(0.0f, 0.4f, 0.0f);
+    public static Color second=Color.WHITE;
     public static ChessBoard getInstance() {
         if (chessBoard_Instance == null)
             chessBoard_Instance = new ChessBoard();
@@ -49,6 +50,24 @@ public class ChessBoard {
 
     }
 
+    public static void drawBoard(Graphics2D g2d, int posytionX, int posytionY, int with) {
+
+        int counter = 0;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if ((counter & 1) == 0)
+                    g2d.setColor(first);
+                else
+                    g2d.setColor(second);
+
+                g2d.fillRect(posytionX + (with * j), posytionY + (with * i), with, with);
+                counter++;
+
+            }
+            counter++;
+        }
+
+    }
     public Piece getPiece(int x, int y) {
         char symbol = bord[y][x];
         if (symbol != '0')
