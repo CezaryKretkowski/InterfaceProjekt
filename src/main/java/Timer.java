@@ -26,6 +26,11 @@ public class Timer extends Thread{
         this.r=r;
         this.start();
     }
+
+    public void setCounter(int counter) {
+        this.counter = counter*60;
+    }
+
     @Override
     public void run(){
         while(true)

@@ -11,14 +11,14 @@ public class Settings extends JDialog implements ActionListener{
     JTabbedPane tabbedPane;
     JPanel cards[] = {
             new ChangeChessBoardColor(),
-            new JPanel(),
+            new GameSettings(),
             new JPanel()
     };
 
     public Settings() {
         this.setSize(512, 650);
         tabbedPane=new JTabbedPane();
-        cards[1].add(new Label("game Setting"));
+
 
         tabbedPane.addTab("Apperence Setting",cards[0]);
         tabbedPane.addTab("Game Setting",cards[1]);

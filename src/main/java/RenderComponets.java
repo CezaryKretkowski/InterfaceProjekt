@@ -1,8 +1,11 @@
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.util.LinkedList;
 
 public class RenderComponets extends JPanel {
 
@@ -16,10 +19,25 @@ public class RenderComponets extends JPanel {
     public Point boardPosX;
     public Point boardPosy;
     private boolean ANTIALIAS;
+    private LinkedList<Point> legalMoves;
     private RenderingHints hints;
-    public Timer whiteTimer;
-    public Timer blackTimer;
+    public static Timer whiteTimer;
+    public static Timer blackTimer;
+    public static int paceOfGame = 10;
+    JButton restart;
+    JButton pouse;
+    JButton resum;
+    JButton whiteSurender;
+    JButton blackSurender;
 
+    public void setLegalMoves(LinkedList<Point> legalMoves) {
+        this.legalMoves = legalMoves;
+    }
+
+    public static void setTime() {
+        blackTimer.setCounter(paceOfGame);
+        whiteTimer.setCounter(paceOfGame);
+    }
 
     public void setAntiAliasing() {
         hints = new RenderingHints(RenderingHints.KEY_RENDERING,
@@ -54,10 +72,41 @@ public class RenderComponets extends JPanel {
 
     }
 
+    protected ImageIcon createImageIcon(String path,
+                                        String description) {
+        java.net.URL imgURL = ClassLoader.getSystemResource(path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL, description);
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
+    }
+
     public RenderComponets() {
 
-        this.ANTIALIAS = true;
 
+        whiteSurender = new JButton("Resign");
+        blackSurender = new JButton("Resign");
+        whiteSurender.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(MouseInput.turn == MouseInput.Turn.White)
+                    resigne(MouseInput.Turn.White);
+            }
+        });
+        blackSurender.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(MouseInput.turn == MouseInput.Turn.Black)
+                    resigne(MouseInput.Turn.Black);
+            }
+        });
+        add(whiteSurender);
+        add(blackSurender);
+        this.legalMoves = new LinkedList<>();
+        this.ANTIALIAS = true;
+        setLayout(null);
         this.boardPosX = new Point();
         this.boardPosy = new Point();
         this.setBackground(Color.DARK_GRAY);
@@ -72,11 +121,48 @@ public class RenderComponets extends JPanel {
             }
 
         });
-        whiteTimer=new Timer(this);
+        whiteTimer = new Timer(this);
         //whiteTimer.startTimer();
-        blackTimer=new Timer(this);
-      //  blackTimer.startTimer();
+        blackTimer = new Timer(this);
+        //  blackTimer.startTimer();
         this.setAntiAliasing();
+        restart = new JButton("Restart");
+        pouse = new JButton("Pause");
+        resum = new JButton("Resume");
+        restart.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                restartGame();
+                repaint();
+                legalMoves.clear();
+                MouseInput.turn = MouseInput.Turn.White;
+            }
+        });
+        pouse.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mouseInput.pouse = true;
+                //  if(MouseInput.turn== MouseInput.Turn.White)
+                whiteTimer.stopTimer();
+                // if(MouseInput.turn== MouseInput.Turn.Black)
+                blackTimer.stopTimer();
+            }
+        });
+        resum.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mouseInput.pouse = false;
+                if (!ChessBoard.tabToFen(ChessBoard.getInstance().getBord()).equals("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/")) {
+                    if (MouseInput.turn != MouseInput.Turn.White)
+                        whiteTimer.startTimer();
+                    if (MouseInput.turn != MouseInput.Turn.Black)
+                        blackTimer.startTimer();
+                }
+            }
+        });
+        add(restart);
+        add(pouse);
+        add(resum);
     }
 
     public void paintPosytion(Graphics2D g2d) {
@@ -104,7 +190,7 @@ public class RenderComponets extends JPanel {
         // }
         // g2d.drawString(String.valueOf(mouseListener.getMousePosX())+"/"+String.valueOf(mouseListener.getMousePosY()),20,20);
         g2d.setColor(Color.WHITE);
-        g2d.drawString(String.valueOf(mouseInput.mousePosX) + "/" + String.valueOf(mouseInput.mousePosY), 20, 40);
+       // g2d.drawString(String.valueOf(mouseInput.mousePosX) + "/" + String.valueOf(mouseInput.mousePosY), 20, 40);
         char sys = '0';
         if (null != mouseInput.selected)
             sys = mouseInput.selected.getSymbol();
@@ -112,51 +198,86 @@ public class RenderComponets extends JPanel {
             sys = '0';
 
 
-        g2d.drawString(String.valueOf(sys), 20, 60);
-        if (mouseInput.mousePosY < 8 && mouseInput.mousePosX < 8)
-            g2d.drawString(String.valueOf(ChessBoard.getInstance().getBord()[mouseInput.mousePosY][mouseInput.mousePosX]), 20, 80);
-        else
-            g2d.drawString(String.valueOf('0'), 20, 80);
+       // g2d.drawString(String.valueOf(sys), 20, 60);
+//        if (mouseInput.mousePosY < 8 && mouseInput.mousePosX < 8)
+//            g2d.drawString(String.valueOf(ChessBoard.getInstance().getBord()[mouseInput.mousePosY][mouseInput.mousePosX]), 20, 80);
+//        else
+//            g2d.drawString(String.valueOf('0'), 20, 80);
+//
+//        if (MouseInput.turn == MouseInput.Turn.Black)
+//            g2d.drawString(String.valueOf("Black"), 20, 100);
+//        else
+//            g2d.drawString(String.valueOf("White"), 20, 100);
 
-        if(MouseInput.turn== MouseInput.Turn.Black)
-            g2d.drawString(String.valueOf("Black"), 20, 100);
-        else
-            g2d.drawString(String.valueOf("White"), 20, 100);
-
-        if(mouseInput.selected!=null) {
-            Piece.drawPieces(mouseInput.selected, g2d,(int)chessFildWidth ,mouseInput.currentMousePos);
-            System.out.println("dragged "+ mouseInput.currentMousePos.getX());
+        if (mouseInput.selected != null) {
+            Piece.drawPieces(mouseInput.selected, g2d, (int) chessFildWidth, mouseInput.currentMousePos);
+            System.out.println("dragged " + mouseInput.currentMousePos.getX());
         }
 
         interfaceElements();
+        if (!legalMoves.isEmpty()) {
+            for (Point p : legalMoves) {
+                drawLegalMoves(g2d, p);
+            }
+        }
     }//
 
-    public void interfaceElements(){
-        int rightPanel=(int)(leftPanel+chessBoardWidth)+20;
-        int heigt=(int) (chessBoardWidth/2);
-        int width=widthOfWindow-(int)rightPanel-40;
+    void restartGame() {
+
+
+        blackTimer.stopTimer();
+        whiteTimer.stopTimer();
+        setTime();
+        ChessBoard.getInstance().setBord(ChessBoard.fenToTab("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"));
+    }
+    void resigne(MouseInput.Turn t){
+        if(t== MouseInput.Turn.White)
+            JOptionPane.showMessageDialog(this, "White surrendered the party to Black's victory!");
+        else
+            JOptionPane.showMessageDialog(this, "Black surrendered the party to White's victory!");
+        restartGame();
+    }
+    public void interfaceElements() {
+        int rightPanel = (int) (leftPanel + chessBoardWidth) + 20;
+        int heigt = (int) (chessBoardWidth / 2);
+        int width = widthOfWindow - (int) rightPanel - 40;
+        int widthButton = width / 3;
 
         g2d.setColor(Color.black);
-        g2d.fillRect(rightPanel,heigt-70,width,60);
-        g2d.fillRect(rightPanel,heigt+70,width,60);
+        g2d.fillRect(rightPanel, heigt - 70, width, 60);
+        g2d.fillRect(rightPanel, heigt + 70, width, 60);
         g2d.setColor(Color.WHITE);
         g2d.setFont(new Font("TimesRoman", Font.PLAIN, 40));
-        int time=whiteTimer.getCount();
+        int time = whiteTimer.getCount();
 
-        g2d.drawString(String.valueOf(timeToString(whiteTimer.getCount())), rightPanel+(width/2)-50, heigt-25);
-        g2d.drawString(String.valueOf(timeToString(blackTimer.getCount())), rightPanel+(width/2)-50, heigt+115);
+        restart.setBounds(rightPanel, heigt + 10, widthButton, 40);
+        pouse.setBounds(rightPanel + widthButton, heigt + 10, widthButton, 40);
+        resum.setBounds(rightPanel + 2 * widthButton, heigt + 10, widthButton, 40);
+        whiteSurender.setBounds(rightPanel, heigt + 70 + 70, width, 40);
+        blackSurender.setBounds(rightPanel, heigt - 70 - 55, width, 40);
+        g2d.drawString(String.valueOf(timeToString(whiteTimer.getCount())), rightPanel + (width / 2) - 50, heigt - 25);
+        g2d.drawString(String.valueOf(timeToString(blackTimer.getCount())), rightPanel + (width / 2) - 50, heigt + 115);
     }
-    public String timeToString(int time){
-        int minutes=time/60;
-        int seconds=time-minutes*60;
-        String minutesString=minutes+":";
-        String secondsString=String.valueOf(seconds);
-        if(minutes<10)
-            minutesString="0"+minutesString;
-        if(seconds<10)
-            secondsString="0"+secondsString;
-        String out=minutesString+secondsString;
+
+    public String timeToString(int time) {
+        int minutes = time / 60;
+        int seconds = time - minutes * 60;
+        String minutesString = minutes + ":";
+        String secondsString = String.valueOf(seconds);
+        if (minutes < 10)
+            minutesString = "0" + minutesString;
+        if (seconds < 10)
+            secondsString = "0" + secondsString;
+        String out = minutesString + secondsString;
         return out;
+    }
+
+    public void drawLegalMoves(Graphics2D g2d, Point p) {
+        g2d.setColor(ChessBoard.helpPointer);
+        int ovalSize = (int) chessFildWidth / 3;
+        int x = (int) leftPanel + (p.x * (int) chessFildWidth) + 7;
+        int y = 30 + ((p.y * (int) chessFildWidth) + 7);
+        g2d.fillOval(x, y, ovalSize, ovalSize);
     }
 
 }

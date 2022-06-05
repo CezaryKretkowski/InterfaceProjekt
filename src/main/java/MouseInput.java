@@ -14,6 +14,7 @@ public class MouseInput implements MouseListener, MouseMotionListener {
     public Point currentMousePos;
     public Piece selected = null;
     public static Turn turn=Turn.White;
+    public boolean pouse=false;
 
 
 
@@ -40,46 +41,53 @@ public class MouseInput implements MouseListener, MouseMotionListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
+        if(!pouse) {
+            if (mousePosX < 8 && 8 > mousePosY) {
+                selected = ChessBoard.getInstance().getPiece(mousePosX, mousePosY);
+                if (null != selected && selected.getColor() == turn) {
+                    selected.move(ChessBoard.getInstance().getBord());
+                    renderComponets.setLegalMoves(selected.legalsMoves);
+                    for (Point p : selected.legalsMoves) {
+                        System.out.println(p.x + " " + p.y);
+                    }
+                    ChessBoard.getInstance().clearPieces(mousePosX, mousePosY);
+                    selected.setKords(mousePosX, mousePosY);
 
-        if (mousePosX < 8 && 8 > mousePosY) {
-            selected = ChessBoard.getInstance().getPiece(mousePosX, mousePosY);
-            if (null != selected&&selected.getColor()==turn) {
-
-                ChessBoard.getInstance().clearPieces(mousePosX, mousePosY);
-                selected.setKords(mousePosX, mousePosY);
+                } else
+                    selected = null;
 
             } else
                 selected = null;
 
-        } else
-            selected = null;
 
-
-        renderComponets.repaint();
+            renderComponets.repaint();
+        }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        calculateMouseCoords(e.getX(),e.getY());
-        if (selected != null) {
-            if (mousePosX < 8 && 8 > mousePosY) {
-                selected.setKords(mousePosX, mousePosY);
-                ChessBoard.getInstance().setPiece(selected, mousePosX, mousePosY);
-                turn=turn==Turn.White?Turn.Black:Turn.White;
-                if(turn==Turn.White){
-                    renderComponets.whiteTimer.stopTimer();
-                    renderComponets.blackTimer.startTimer();
-                }else{
-                    renderComponets.whiteTimer.startTimer();
-                    renderComponets.blackTimer.stopTimer();
+        if(!pouse) {
+            calculateMouseCoords(e.getX(), e.getY());
+            if (selected != null) {
+                if (mousePosX < 8 && 8 > mousePosY) {
+                    selected.setKords(mousePosX, mousePosY);
+                    ChessBoard.getInstance().setPiece(selected, mousePosX, mousePosY);
+                    turn = turn == Turn.White ? Turn.Black : Turn.White;
+                    if (turn == Turn.White) {
+                        renderComponets.whiteTimer.stopTimer();
+                        renderComponets.blackTimer.startTimer();
+                    } else {
+                        renderComponets.whiteTimer.startTimer();
+                        renderComponets.blackTimer.stopTimer();
+                    }
+                    selected = null;
+                } else {
+                    ChessBoard.getInstance().setPiece(selected, selected.getKords().x, selected.getKords().y);
+                    selected = null;
                 }
-                selected=null;
-            } else {
-                ChessBoard.getInstance().setPiece(selected, selected.getKords().x, selected.getKords().y);
-                selected=null;
             }
+            renderComponets.repaint();
         }
-        renderComponets.repaint();
 
 
     }

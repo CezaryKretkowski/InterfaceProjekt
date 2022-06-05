@@ -3,21 +3,24 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 
 public class Piece {
 	private char symbol;
 	private Point kords;
-	private MouseInput.Turn color;
+	protected MouseInput.Turn color;
+	public LinkedList<Point> legalsMoves;
     public Piece(char symbol, int x, int y) {
     	this.kords=new Point(x,y);
     	this.symbol=symbol;
+		legalsMoves=new LinkedList<Point>();
     	if(symbol>'Z')
     		setColor(MouseInput.Turn.Black);
     	else 
     		setColor(MouseInput.Turn.White);
     }
 	public Piece(char symbol) {
-
+		legalsMoves=new LinkedList<Point>();
 		this.symbol=symbol;
 		if(symbol>'Z')
 			setColor(MouseInput.Turn.Black);
@@ -76,4 +79,5 @@ public class Piece {
 	public void setColor(MouseInput.Turn color) {
 		this.color = color;
 	}
+	public void move(char[][] board){}
 }
