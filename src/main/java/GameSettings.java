@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 
 public class GameSettings extends JPanel  {
     JLabel title;
+    Icon icon;
     String fen= "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
     JList<String> fenList;
     private boolean ANTIALIAS;
@@ -16,6 +17,25 @@ public class GameSettings extends JPanel  {
     JTextArea getFen;
     JButton saveFen;
     JButton Save;
+    JButton fenInfo;
+    String info=
+            "Forsyth–Edwards Notation (FEN) is a standard notation \n" +
+                    "for describing a \n" +
+                    "particular board position of a chess game.\n"+
+                    "The purpose of FEN is to provide all the necessary \n" +
+                    "information to restart a game from a particular position.\n" +
+                    "FEN is based on a system developed by Scottish newspaper\n" +
+                    "journalist David Forsyth. Forsyth's system became popular \n" +
+                    "in the 19th century"+ "Steven J. Edwards extended it \n" +
+                    "to support use by computers. FEN is defined in the \n"+
+                    "Portable Game Notation Specification and Implementation Guide.\n"+
+                    "In the Portable Game Notation for chess games, FEN is used to \n" +
+                    "define initial positions other than the standard one. \n"+
+                    "FEN does not provide sufficient information to decide whether a \n" +
+                    "draw by threefold repetition may be legally claimed \n" +
+                    "or a draw offer may be accepted; for that, a different format such \n" +
+                    "as Extended Position Description is needed.\n\n "+"More Information on :\n"
+                +"https://www.chessgames.com/fenhelp.html";
     String data[]={
             "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR",
             "6R1/8/1p6/4k3/P3r2p/7P/1r4P1/R6K",
@@ -37,6 +57,8 @@ public class GameSettings extends JPanel  {
         ANTIALIAS=true;
         setAntiAliasing();
         setLayout(null);
+        fenInfo=new JButton("?");
+
        // title=new JLabel("Chose the pace of the game");
        // title.setBounds(160,40,200,40);
        // add(title);
@@ -68,6 +90,7 @@ public class GameSettings extends JPanel  {
         getFen.setBounds(40,450,240,30);
 
         saveFen=new JButton("Save Fen");
+
         saveFen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -78,6 +101,7 @@ public class GameSettings extends JPanel  {
             }
         });
         saveFen.setBounds(300,450,100,30);
+        fenInfo.setBounds(400,450,50,30);
         add(fenEditor);
         add(saveFen);
         add(getFen);
@@ -91,6 +115,14 @@ public class GameSettings extends JPanel  {
                 RenderComponets.setTime();
             }
         });
+        icon=createImageIcon("fenhelp1.gif","Fen Explain");
+        fenInfo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null,info,"Forsyth-Edwards Notation (FEN)",JOptionPane.INFORMATION_MESSAGE,icon);
+            }
+        });
+        add(fenInfo);
         add(Save);
 
     }
@@ -131,6 +163,16 @@ public class GameSettings extends JPanel  {
                     RenderingHints.VALUE_ANTIALIAS_OFF);
 
 
+    }
+    protected ImageIcon createImageIcon(String path,
+                                        String description) {
+        java.net.URL imgURL = ClassLoader.getSystemResource(path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL, description);
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
     }
 
 }

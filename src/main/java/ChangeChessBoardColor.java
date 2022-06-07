@@ -61,7 +61,7 @@ public class ChangeChessBoardColor extends JPanel {
         add(firstRGB[1]);
         add(firstRGB[2]);
         add(color0);
-        add(color1);
+       add(color1);
         add(save);
         add(secondRGB[0]);
         add(secondRGB[1]);
