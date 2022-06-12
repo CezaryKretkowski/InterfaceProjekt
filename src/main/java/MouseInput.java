@@ -4,18 +4,20 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 public class MouseInput implements MouseListener, MouseMotionListener {
-    public  enum Turn{
+    public enum Turn {
         Black,
         White
-    };
+    }
+
+    ;
     RenderComponets renderComponets;
     public int mousePosX;
     public int mousePosY;
     public Point currentMousePos;
     public Piece selected = null;
-    public static Turn turn=Turn.White;
-    public boolean pouse=false;
-
+    public static Turn turn = Turn.White;
+    public boolean pouse = false;
+    private String fen;
 
 
     void calculateMouseCoords(int posX, int posY) {
@@ -31,7 +33,7 @@ public class MouseInput implements MouseListener, MouseMotionListener {
 
     public MouseInput(RenderComponets r) {
         renderComponets = r;
-        currentMousePos=new Point();
+        currentMousePos = new Point();
     }
 
     @Override
@@ -41,7 +43,8 @@ public class MouseInput implements MouseListener, MouseMotionListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if(!pouse) {
+        fen = ChessBoard.tabToFen(ChessBoard.getInstance().getBord());
+        if (!pouse) {
             if (mousePosX < 8 && 8 > mousePosY) {
                 selected = ChessBoard.getInstance().getPiece(mousePosX, mousePosY);
                 if (null != selected && selected.getColor() == turn) {
@@ -66,19 +69,21 @@ public class MouseInput implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if(!pouse) {
+        if (!pouse) {
             calculateMouseCoords(e.getX(), e.getY());
             if (selected != null) {
                 if (mousePosX < 8 && 8 > mousePosY) {
                     selected.setKords(mousePosX, mousePosY);
                     ChessBoard.getInstance().setPiece(selected, mousePosX, mousePosY);
-                    turn = turn == Turn.White ? Turn.Black : Turn.White;
-                    if (turn == Turn.White) {
-                        renderComponets.whiteTimer.stopTimer();
-                        renderComponets.blackTimer.startTimer();
-                    } else {
-                        renderComponets.whiteTimer.startTimer();
-                        renderComponets.blackTimer.stopTimer();
+                    if (!fen.equals(ChessBoard.tabToFen(ChessBoard.getInstance().getBord()))) {
+                        turn = turn == Turn.White ? Turn.Black : Turn.White;
+                        if (turn == Turn.White) {
+                            renderComponets.whiteTimer.stopTimer();
+                            renderComponets.blackTimer.startTimer();
+                        } else {
+                            renderComponets.whiteTimer.startTimer();
+                            renderComponets.blackTimer.stopTimer();
+                        }
                     }
                     selected = null;
                 } else {
@@ -104,15 +109,15 @@ public class MouseInput implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        currentMousePos.x=e.getX();
-        currentMousePos.y=e.getY();
+        currentMousePos.x = e.getX();
+        currentMousePos.y = e.getY();
         renderComponets.repaint();
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        currentMousePos.x=e.getX();
-        currentMousePos.y=e.getY();
+        currentMousePos.x = e.getX();
+        currentMousePos.y = e.getY();
         calculateMouseCoords(e.getX(), e.getY());
         renderComponets.repaint();
     }

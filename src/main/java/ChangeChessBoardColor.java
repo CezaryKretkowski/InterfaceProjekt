@@ -81,6 +81,6 @@ public class ChangeChessBoardColor extends JPanel {
          first =new Color((int)fr,(int)fg,(int)fb);
          second =new Color((int)sr,(int)sg,(int)sb);
 
-        ChessBoard.drawBoard((Graphics2D) g,10,100,59,first,second);
+        ChessBoard.drawBoard((Graphics2D) g,10,100,40,first,second);
     }
 }

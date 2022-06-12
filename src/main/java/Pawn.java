@@ -22,33 +22,48 @@ public class Pawn extends Piece {
 
                 if (board[posX - 1][posY] == '0')
                     legalsMoves.add(new Point(posY, posX - 1));
-                if(board[posX - 1][posY+1] != '0'){
-                   // if(ChessBoard.getInstance().getPiece(posX - 1,posY+1).getColor()!=color){
-                 //       legalsMoves.add(new Point(posY+1, posX - 1));
-                   // }
-                }
-                if(board[posX - 1][posY-1] != '0'){
-                  //  if(ChessBoard.getInstance().getPiece(posX - 1,posY-1).getColor()!=color){
-                        legalsMoves.add(new Point(posY-1, posX - 1));
-                   // }
-                }
 
-                if(posX==6&&board[posX - 2][posY] == '0') {
+                if (posY + 1 < 8 && posX + 1 < 8 && posX - 1 >= 0&&posY-1>=0) {
+                    Piece nextPieces0 = ChessBoard.getInstance().getPiece(posY - 1, posX + 1);
+                    if (nextPieces0 != null && nextPieces0.color != this.color){
+                        legalsMoves.add(new Point(posY + 1, posX - 1));
+
+                    }
+                }
+                if (posY - 1 >= 0 && posX + 1 < 8 && posX - 1 >= 0) {
+                    Piece nextPieces1 = ChessBoard.getInstance().getPiece(posY - 1, posX - 1);
+                    if (nextPieces1 != null && nextPieces1.color != this.color) {
+                        legalsMoves.add(new Point(posY - 1, posX - 1));
+                        System .out.println("Dodano"+ posX+" "+posY);
+                    }
+
+                }
+                if (posX == 6 && board[posX - 2][posY] == '0') {
                     legalsMoves.add(new Point(posY, posX - 2));
                 }
 
-            } else if (color ==  MouseInput.turn.Black) {
+
+            } else {
 
                 if (board[posX + 1][posY] == '0')
                     legalsMoves.add(new Point(posY, posX + 1));
-                if (board[posX + 1][posY+1] != '0'){
+
+                if (posY + 1 < 8 && posX + 1 < 8 && posX - 1 >= 0&&posY-1>=0) {
+                    Piece nextPieces0 = ChessBoard.getInstance().getPiece(posY - 1, posX + 1);
+                    if (nextPieces0 != null && nextPieces0.color != this.color){
+                        legalsMoves.add(new Point(posY + 1, posX + 1));
+
+                    }
+                }
+                if (posY - 1 >= 0 && posX + 1 < 8 && posX - 1 >= 0) {
+                    Piece nextPieces1 = ChessBoard.getInstance().getPiece(posY - 1, posX - 1);
+                    if (nextPieces1 != null && nextPieces1.color != this.color) {
+                        legalsMoves.add(new Point(posY - 1, posX + 1));
+                        System .out.println("Dodano"+ posX+" "+posY);
+                    }
 
                 }
-                if (board[posX + 1][posY-1] != '0'){
-
-                }
-
-                if(posX==1&&board[posX + 2][posY] == '0') {
+                if (posX == 1 && board[posX + 2][posY] == '0') {
                     legalsMoves.add(new Point(posY, posX + 2));
                 }
 

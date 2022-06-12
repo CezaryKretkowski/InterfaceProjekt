@@ -41,7 +41,9 @@ public class App extends JFrame {
                 App app = new App();
                 app.window.setVisible(true);
 
-            } catch (Exception e) {
+
+            } catch (Exception
+                    e) {
                 e.getStackTrace();
             }
         });

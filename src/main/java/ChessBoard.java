@@ -81,6 +81,8 @@ public class ChessBoard {
         switch (symbol){
             case 'p':p=new Pawn(symbol, point.y, point.x); break;
             case 'P':p=new Pawn(symbol, point.y, point.x); break;
+            case 'n':p=new Knight(symbol,point.y, point.x);break;
+            case 'N':p=new Knight(symbol,point.y, point.x);break;
         }
         return p;
     }

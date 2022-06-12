@@ -265,9 +265,10 @@ public class RenderComponets extends JPanel {
 
     public void drawLegalMoves(Graphics2D g2d, Point p) {
         g2d.setColor(ChessBoard.helpPointer);
+        int h=(int)chessFildWidth/2;
         int ovalSize = (int) chessFildWidth / 3;
-        int x = (int) leftPanel + (p.x * (int) chessFildWidth) + 7;
-        int y = 30 + ((p.y * (int) chessFildWidth) + 7);
+        int x = (int) leftPanel + (p.x * (int) chessFildWidth) + h-7;
+        int y = 30 + ((p.y * (int) chessFildWidth) + h-7);
         g2d.fillOval(x, y, ovalSize, ovalSize);
     }
 
