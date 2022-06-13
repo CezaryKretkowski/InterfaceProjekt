@@ -75,8 +75,9 @@ public class MouseInput implements MouseListener, MouseMotionListener {
                 if (mousePosX < 8 && 8 > mousePosY) {
                     selected.setKords(mousePosX, mousePosY);
                     ChessBoard.getInstance().setPiece(selected, mousePosX, mousePosY);
-                    if (!fen.equals(ChessBoard.tabToFen(ChessBoard.getInstance().getBord()))) {
+                    if (checkLegalMoves()&&!fen.equals(ChessBoard.tabToFen(ChessBoard.getInstance().getBord()))) {
                         turn = turn == Turn.White ? Turn.Black : Turn.White;
+                        renderComponets.clearLegalMoves();
                         if (turn == Turn.White) {
                             renderComponets.whiteTimer.stopTimer();
                             renderComponets.blackTimer.startTimer();
@@ -84,6 +85,8 @@ public class MouseInput implements MouseListener, MouseMotionListener {
                             renderComponets.whiteTimer.startTimer();
                             renderComponets.blackTimer.stopTimer();
                         }
+                    }else{
+                        ChessBoard.getInstance().setBord(ChessBoard.fenToTab(fen));
                     }
                     selected = null;
                 } else {
@@ -91,6 +94,7 @@ public class MouseInput implements MouseListener, MouseMotionListener {
                     selected = null;
                 }
             }
+
             renderComponets.repaint();
         }
 
@@ -120,5 +124,13 @@ public class MouseInput implements MouseListener, MouseMotionListener {
         currentMousePos.y = e.getY();
         calculateMouseCoords(e.getX(), e.getY());
         renderComponets.repaint();
+    }
+    public boolean checkLegalMoves(){
+        for(Point n: selected.legalsMoves){
+            if(selected.getKords().equals(n)){
+                return true;
+            }
+        }
+        return false;
     }
 }

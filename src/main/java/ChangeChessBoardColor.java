@@ -1,86 +1,122 @@
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.ColorChooserUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ChangeChessBoardColor extends JPanel {
-    JSpinner firstRGB[]={
-            new JSpinner(new SpinnerNumberModel(0.0, 0.0, 255.0, 1.0)),
-            new JSpinner(new SpinnerNumberModel(0.0, 0.0, 255.0, 1.0)),
-            new JSpinner(new SpinnerNumberModel(0.0, 0.0, 255.0, 1.0))
-    };
-    JSpinner secondRGB[]={
-            new JSpinner(new SpinnerNumberModel(255.0, 0.0, 255.0, 1.0)),
-            new JSpinner(new SpinnerNumberModel(255.0, 0.0, 255.0, 1.0)),
-            new JSpinner(new SpinnerNumberModel(255.0, 0.0, 255.0, 1.0))
-    };
-    Color first= new Color(0.0f, 0.4f, 0.0f);
-    Color second=Color.WHITE;
+
+    Color first = new Color(0.0f, 0.4f, 0.0f);
+    Color second = Color.WHITE;
+    Color third = Color.black;
 
     JButton save;
-    public ChangeChessBoardColor(){
-        ChangeListener listenerChange = new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                repaint();
-            }
-        };
+    JButton helpColorPcker;
+    JButton saveFirstColor;
+    JButton saveSecondColor;
 
+    public ChangeChessBoardColor() {
+
+
+        first = ChessBoard.first;
+        second = ChessBoard.second;
 
         setLayout(null);
-        save=new JButton("Save");
-        save.setBounds(390,40,100,30);
-        Label color0=new Label("First  Color");
-        color0.setBounds(60,10,120,30);
-        Label color1=new Label("Second Color");
-        color1.setBounds(260,10,120,30);
-        firstRGB[0].setBounds(10,40,60,30);
-        firstRGB[1].setBounds(70,40,60,30);
-        firstRGB[2].setBounds(130,40,60,30);
-        secondRGB[0].setBounds(200,40,60,30);
-        secondRGB[1].setBounds(260,40,60,30);
-        secondRGB[2].setBounds(320,40,60,30);
+        save = new JButton("Save");
+        save.setBounds(340, 550, 150, 30);
 
-        firstRGB[0].addChangeListener(listenerChange);
-        firstRGB[1].addChangeListener(listenerChange);
-        firstRGB[2].addChangeListener(listenerChange);
+        saveFirstColor = new JButton("Chose first color");
+        saveFirstColor.setBounds(340, 90 + 20, 150, 30);
 
-        secondRGB[0].addChangeListener(listenerChange);
-        secondRGB[1].addChangeListener(listenerChange);
-        secondRGB[2].addChangeListener(listenerChange);
+        saveSecondColor = new JButton("Chose second color");
+        saveSecondColor.setBounds(340, 140 + 20, 150, 30);
+
+        helpColorPcker = new JButton("Chose help  picker color");
+        helpColorPcker.setBounds(340, 40 + 20, 150, 30);
+
+        Label color0 = new Label("Choose your appearance settings");
+        color0.setBounds(100, 10, 250, 30);
+
 
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               ChessBoard.first=first;
-               ChessBoard.second=second;
+                int confirm = JOptionPane.showConfirmDialog(null, "Do you wont save settings?", "Save Settings",
+                        JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
+                if (confirm == 0) {
+                    ChessBoard.first = first;
+                    ChessBoard.second = second;
+                    ChessBoard.helpPointer = third;
+                }
             }
         });
-        add(firstRGB[0]);
-        add(firstRGB[1]);
-        add(firstRGB[2]);
-        add(color0);
-       add(color1);
+
+        // add(color0);
         add(save);
-        add(secondRGB[0]);
-        add(secondRGB[1]);
-        add(secondRGB[2]);
+        add(saveFirstColor);
+        add(saveSecondColor);
+        add(helpColorPcker);
+
         //add(this);
 
+        saveFirstColor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Color c = JColorChooser.showDialog(new JColorChooser(),
+                        "Choose a color...", getBackground());
+                if (c != null) {
+                    first = c;
+                    repaint();
+                }
+            }
+        });
+
+        saveSecondColor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Color c = JColorChooser.showDialog(new JColorChooser(),
+                        "Choose a color...", getBackground());
+                if (c != null) {
+                    second = c;
+                    repaint();
+                }
+            }
+        });
+
+        helpColorPcker.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Color c = JColorChooser.showDialog(new JColorChooser(),
+                        "Choose a color...", getBackground());
+                if (c != null) {
+                    third = c;
+                    repaint();
+                }
+            }
+        });
+
     }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        double fr=(Double) firstRGB[0].getValue();
-        double fg=(Double) firstRGB[1].getValue();
-        double fb=(Double) firstRGB[2].getValue();
-        double sr=(Double) secondRGB[0].getValue();
-        double sg=(Double) secondRGB[1].getValue();
-        double sb=(Double) secondRGB[2].getValue();
-         first =new Color((int)fr,(int)fg,(int)fb);
-         second =new Color((int)sr,(int)sg,(int)sb);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.WHITE);
+        g2d.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+        g2d.drawString("Choose your appearance settings", 15, 40);
 
-        ChessBoard.drawBoard((Graphics2D) g,10,100,40,first,second);
+        ChessBoard.drawBoard((Graphics2D) g, 10, 60, 40, first, second);
+
+
+        g2d.setColor(first);
+        g2d.fillRect(10, 390 + 20, 160, 160);
+        g2d.setColor(second);
+        g2d.fillRect(170, 390 + 20, 160, 160);
+        g2d.setColor(third);
+        g2d.fillOval(45 + 15, 420 + 35, 60, 60);
+        g2d.setColor(third);
+        g2d.fillOval(205 + 15, 420 + 35, 60, 60);
     }
 }

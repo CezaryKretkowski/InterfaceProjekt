@@ -30,6 +30,9 @@ public class RenderComponets extends JPanel {
     JButton whiteSurender;
     JButton blackSurender;
 
+    public void clearLegalMoves(){
+        legalMoves.clear();
+    }
     public void setLegalMoves(LinkedList<Point> legalMoves) {
         this.legalMoves = legalMoves;
     }

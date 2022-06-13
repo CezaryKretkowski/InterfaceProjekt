@@ -12,7 +12,7 @@ public class Settings extends JDialog implements ActionListener{
     JPanel cards[] = {
             new ChangeChessBoardColor(),
             new GameSettings(),
-            new JPanel()
+            new FenEditor()
     };
 
     public Settings() {
@@ -22,6 +22,7 @@ public class Settings extends JDialog implements ActionListener{
 
         tabbedPane.addTab("Apperence Setting",cards[0]);
         tabbedPane.addTab("Game Setting",cards[1]);
+        tabbedPane.addTab("Position Editor",cards[2]);
         this.add(tabbedPane, BorderLayout.CENTER);
 
     }

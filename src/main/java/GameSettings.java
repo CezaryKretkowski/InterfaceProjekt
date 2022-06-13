@@ -7,10 +7,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GameSettings extends JPanel  {
+public class GameSettings extends JPanel {
     JLabel title;
     Icon icon;
-    String fen= "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+    String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
     JList<String> fenList;
     private boolean ANTIALIAS;
     private RenderingHints hints;
@@ -18,25 +18,25 @@ public class GameSettings extends JPanel  {
     JButton saveFen;
     JButton Save;
     JButton fenInfo;
-    String info=
+    String info =
             "Forsyth–Edwards Notation (FEN) is a standard notation \n" +
                     "for describing a \n" +
-                    "particular board position of a chess game.\n"+
+                    "particular board position of a chess game.\n" +
                     "The purpose of FEN is to provide all the necessary \n" +
                     "information to restart a game from a particular position.\n" +
                     "FEN is based on a system developed by Scottish newspaper\n" +
                     "journalist David Forsyth. Forsyth's system became popular \n" +
-                    "in the 19th century"+ "Steven J. Edwards extended it \n" +
-                    "to support use by computers. FEN is defined in the \n"+
-                    "Portable Game Notation Specification and Implementation Guide.\n"+
+                    "in the 19th century" + "Steven J. Edwards extended it \n" +
+                    "to support use by computers. FEN is defined in the \n" +
+                    "Portable Game Notation Specification and Implementation Guide.\n" +
                     "In the Portable Game Notation for chess games, FEN is used to \n" +
-                    "define initial positions other than the standard one. \n"+
+                    "define initial positions other than the standard one. \n" +
                     "FEN does not provide sufficient information to decide whether a \n" +
                     "draw by threefold repetition may be legally claimed \n" +
                     "or a draw offer may be accepted; for that, a different format such \n" +
-                    "as Extended Position Description is needed.\n\n "+"More Information on :\n"
-                +"https://www.chessgames.com/fenhelp.html";
-    String data[]={
+                    "as Extended Position Description is needed.\n\n " + "More Information on :\n"
+                    + "https://www.chessgames.com/fenhelp.html";
+    String data[] = {
             "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR",
             "6R1/8/1p6/4k3/P3r2p/7P/1r4P1/R6K",
             "1r4n1/3k1p2/pq2pP1p/1p2P1pP/3P2P1/2Q5/8/R1R3K1",
@@ -50,108 +50,117 @@ public class GameSettings extends JPanel  {
             "2q2r2/5rk1/4pNpp/p2pPn2/P1pP2QP/2P2R2/2B3P1/6K1"
     };
     JSlider timerChose;
-    int gameTime=10;
-    String gamePace="10.00";
-    GameSettings(){
+    int gameTime = 10;
+    String gamePace = "10.00";
 
-        ANTIALIAS=true;
+    GameSettings() {
+
+        ANTIALIAS = true;
         setAntiAliasing();
         setLayout(null);
-        fenInfo=new JButton("?");
+        fenInfo = new JButton("?");
 
-       // title=new JLabel("Chose the pace of the game");
-       // title.setBounds(160,40,200,40);
-       // add(title);
-        timerChose=new JSlider(1,60,10);
-        timerChose.setBounds(50,80,200,50);
+        // title=new JLabel("Chose the pace of the game");
+        // title.setBounds(160,40,200,40);
+        // add(title);
+        timerChose = new JSlider(1, 60, 10);
+        timerChose.setBounds(50, 80, 200, 50);
 
         timerChose.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                gameTime=timerChose.getValue();
-                gamePace=gameTime+".00";
+                gameTime = timerChose.getValue();
+                gamePace = gameTime + ".00";
                 repaint();
             }
         });
         add(timerChose);
-        fenList=new JList<>(data);
+        fenList = new JList<>(data);
         fenList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-               fen=fenList.getSelectedValue();
-               repaint();
+                fen = fenList.getSelectedValue();
+                repaint();
             }
         });
-        fenList.setBounds(300,170,100,240);
+        fenList.setBounds(300, 170, 100, 240);
         add(fenList);
-        getFen=new JTextArea();
-        JLabel fenEditor=new JLabel("Provide your own position");
-        fenEditor.setBounds(40,420,240,30);
-        getFen.setBounds(40,450,240,30);
+        getFen = new JTextArea();
+        JLabel fenEditor = new JLabel("Provide your own position");
+        fenEditor.setBounds(40, 420, 240, 30);
+        getFen.setBounds(40, 450, 240, 30);
 
-        saveFen=new JButton("Save Fen");
+        saveFen = new JButton("Save Fen");
 
         saveFen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                fen=getFen.getText();
-                if(fen.isEmpty()){
-                    fen= "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+                fen = getFen.getText();
+                if (fen.isEmpty()) {
+                    fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
                 }
             }
         });
-        saveFen.setBounds(300,450,100,30);
-        fenInfo.setBounds(400,450,50,30);
+        saveFen.setBounds(300, 450, 100, 30);
+        fenInfo.setBounds(400, 450, 50, 30);
         add(fenEditor);
         add(saveFen);
         add(getFen);
-        Save =new JButton("Save");
-        Save.setBounds(250,520,170,50);
+        Save = new JButton("Save");
+
+        Save.setBounds(340, 550, 150, 30);
         Save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ChessBoard.getInstance().setBord(ChessBoard.fenToTab(fen));
-                RenderComponets.paceOfGame=gameTime;
-                RenderComponets.setTime();
+                int confirm = JOptionPane.showConfirmDialog(null, "Do you wont save settings?", "Save Settings",
+                        JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
+                if (confirm == 0) {
+                    ChessBoard.getInstance().setBord(ChessBoard.fenToTab(fen));
+                    RenderComponets.paceOfGame = gameTime;
+                    RenderComponets.setTime();
+                }
             }
         });
-        icon=createImageIcon("fenhelp1.gif","Fen Explain");
+        icon = createImageIcon("fenhelp1.gif", "Fen Explain");
         fenInfo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null,info,"Forsyth-Edwards Notation (FEN)",JOptionPane.INFORMATION_MESSAGE,icon);
+                JOptionPane.showMessageDialog(null, info, "Forsyth-Edwards Notation (FEN)", JOptionPane.INFORMATION_MESSAGE, icon);
             }
         });
         add(fenInfo);
         add(Save);
 
     }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2d=(Graphics2D) g;
+        Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.WHITE);
         g2d.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g2d.drawString(gamePace,260,110);
-        g2d.drawString("Chose the pace of the game",50,40);
+        g2d.drawString(gamePace, 260, 110);
+        g2d.drawString("Chose the pace of the game", 50, 40);
         if (ANTIALIAS)
             g2d.setRenderingHints(hints);
-        ChessBoard.drawBoard(g2d,40,170,30);
-        paintPosytion(g2d,fen);
+        ChessBoard.drawBoard(g2d, 40, 170, 30);
+        paintPosytion(g2d, fen);
     }
-    public void paintPosytion(Graphics2D g2d,String fen) {
+
+    public void paintPosytion(Graphics2D g2d, String fen) {
         char tab[][] = ChessBoard.fenToTab(fen);
         for (int i = 0; i < tab.length; i++) {
 
             for (int j = 0; j < tab.length; j++) {
-                if (tab[i][j] != '0'){
+                if (tab[i][j] != '0') {
                     System.out.println(tab[i][j]);
-                    Piece.drawPieces(new Piece(tab[i][j],  40 + (j * 30) + 2, 170 + (i * 30) + 2), g2d, 40);
+                    Piece.drawPieces(new Piece(tab[i][j], 40 + (j * 30) + 2, 170 + (i * 30) + 2), g2d, 40);
                 }
             }
         }
 
     }
+
     public void setAntiAliasing() {
         hints = new RenderingHints(RenderingHints.KEY_RENDERING,
                 RenderingHints.VALUE_RENDER_QUALITY);
@@ -164,6 +173,7 @@ public class GameSettings extends JPanel  {
 
 
     }
+
     protected ImageIcon createImageIcon(String path,
                                         String description) {
         java.net.URL imgURL = ClassLoader.getSystemResource(path);

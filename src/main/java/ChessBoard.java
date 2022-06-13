@@ -83,6 +83,14 @@ public class ChessBoard {
             case 'P':p=new Pawn(symbol, point.y, point.x); break;
             case 'n':p=new Knight(symbol,point.y, point.x);break;
             case 'N':p=new Knight(symbol,point.y, point.x);break;
+            case 'b':p=new Bishop(symbol,point.y, point.x);break;
+            case 'B':p=new Bishop(symbol,point.y, point.x);break;
+            case 'r':p=new Rook(symbol,point.y, point.x);break;
+            case 'R':p=new Rook(symbol,point.y, point.x);break;
+            case 'k':p=new King(symbol,point.y, point.x);break;
+            case 'K':p=new King(symbol,point.y, point.x);break;
+            case 'q':p=new Queen(symbol,point.y, point.x);break;
+            case 'Q':p=new Queen(symbol,point.y, point.x);break;
         }
         return p;
     }
