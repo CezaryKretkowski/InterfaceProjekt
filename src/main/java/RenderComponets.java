@@ -191,7 +191,7 @@ public class RenderComponets extends JPanel {
         else
             sys = '0';
 
-
+        SwingUtilities.updateComponentTreeUI(this);
        // g2d.drawString(String.valueOf(sys), 20, 60);
 //        if (mouseInput.mousePosY < 8 && mouseInput.mousePosX < 8)
 //            g2d.drawString(String.valueOf(ChessBoard.getInstance().getBord()[mouseInput.mousePosY][mouseInput.mousePosX]), 20, 80);
